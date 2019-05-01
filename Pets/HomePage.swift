@@ -94,6 +94,9 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
         else if (itemLabels[indexPath.item] == "My profile") {
             performSegue(withIdentifier: "toProfile", sender: indexPath)
         }
+        else if (itemLabels[indexPath.item] == "Settings") {
+            performSegue(withIdentifier: "toSettings", sender: indexPath)
+        }
         
         
     }

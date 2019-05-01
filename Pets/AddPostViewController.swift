@@ -10,6 +10,8 @@ import UIKit
 
 class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var uploadImageButton: UIButton!
     @IBOutlet weak var petTypePicker: UISegmentedControl!
     @IBOutlet weak var postTypePicker: UISegmentedControl!
     
@@ -22,6 +24,17 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         super.viewDidLoad()
         /*self.townPickerView.delegate = self
          self.townPickerView.dataSource = self*/
+        addButton.layer.cornerRadius = 10
+        addButton.layer.shadowColor = UIColor.lightGray.cgColor
+        addButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
+        addButton.layer.shadowRadius = 2.0
+        addButton.layer.shadowOpacity = 1.0
+        uploadImageButton.layer.cornerRadius = 10
+        uploadImageButton.layer.shadowColor = UIColor.lightGray.cgColor
+        uploadImageButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
+        uploadImageButton.layer.shadowRadius = 2.0
+        uploadImageButton.layer.shadowOpacity = 1.0
+        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

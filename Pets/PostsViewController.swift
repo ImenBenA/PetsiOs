@@ -103,6 +103,11 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.layer.masksToBounds = false;
         cell.layer.shadowPath = UIBezierPath(roundedRect:cell.bounds, cornerRadius:cell.contentView.layer.cornerRadius).cgPath
         
+        cell.callButton.layer.cornerRadius = 10
+        cell.callButton.layer.shadowColor = UIColor.lightGray.cgColor
+        cell.callButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
+        cell.callButton.layer.shadowRadius = 2.0
+        cell.callButton.layer.shadowOpacity = 1.0
         
         return cell
     }

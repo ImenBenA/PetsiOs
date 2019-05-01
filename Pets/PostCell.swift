@@ -18,6 +18,4 @@ class PostCell: UICollectionViewCell {
     @IBOutlet weak var postDescription: UITextView!
     @IBOutlet weak var postImage: UIImageView!
     @IBOutlet weak var postTitle: UILabel!
-
-    
 }

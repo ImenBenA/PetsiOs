@@ -10,10 +10,16 @@ import UIKit
 
 class MyProfileViewController: ViewController {
 
+    @IBOutlet weak var saveButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        saveButton.layer.cornerRadius = 10
+        saveButton.layer.shadowColor = UIColor.lightGray.cgColor
+        saveButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
+        saveButton.layer.shadowRadius = 2.0
+        saveButton.layer.shadowOpacity = 1.0
     }
     
 
