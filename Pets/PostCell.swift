@@ -11,9 +11,13 @@ import UIKit
 class PostCell: UICollectionViewCell {
     
     
+    @IBOutlet weak var callButton: UIButton!
+    @IBOutlet weak var postTag: UIImageView!
     @IBOutlet weak var postDate: UILabel!
     @IBOutlet weak var postIcon: UIImageView!
     @IBOutlet weak var postDescription: UITextView!
     @IBOutlet weak var postImage: UIImageView!
     @IBOutlet weak var postTitle: UILabel!
+
+    
 }

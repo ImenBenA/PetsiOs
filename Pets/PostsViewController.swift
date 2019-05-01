@@ -16,10 +16,15 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     @IBOutlet weak var collectionView: UICollectionView!
     
+    let itemTags: [UIImage] = [
+        UIImage(named: "l")!,
+        UIImage(named: "f")!
+    ]
+    
     let items = ["1", "2"]
     let itemImages: [UIImage] = [
-        UIImage(named: "lost")!,
-        UIImage(named: "found")!
+        UIImage(named: "tag_pink")!,
+        UIImage(named: "tag_green")!
     ]
     
     var posts:NSArray = []
@@ -69,6 +74,16 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         let url = postdict["petImage"] as? String
         let imageUrl = "http://41.226.11.252:1180/pets/post/" + url!
         cell.postImage.af_setImage(withURL: URL(string: imageUrl)!)
+        
+        let posttype = postdict["type"] as! String
+        
+        if (posttype == "lost") {
+            cell.postIcon.image = itemImages[0]
+            cell.postTag.image = itemTags[0]
+        } else {
+            cell.postIcon.image = itemImages[1]
+            cell.postTag.image = itemTags[1]
+        }
         //let title = posts[indexPath.row] as! Dictionary<String,Any>
         
         //cell.postTitle.text = title
@@ -76,6 +91,18 @@ class PostsViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.postDate.text = items[indexPath.item]
         cell.postImage.image = itemImages[indexPath.item]
         cell.postIcon.image = itemImages[indexPath.item]*/
+        cell.contentView.layer.cornerRadius = 2.0
+        cell.contentView.layer.borderWidth = 1.0
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
+        cell.contentView.layer.masksToBounds = true;
+        cell.backgroundColor = UIColor.white
+        cell.layer.shadowColor = UIColor.lightGray.cgColor
+        cell.layer.shadowOffset = CGSize(width:0,height: 2.0)
+        cell.layer.shadowRadius = 2.0
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.masksToBounds = false;
+        cell.layer.shadowPath = UIBezierPath(roundedRect:cell.bounds, cornerRadius:cell.contentView.layer.cornerRadius).cgPath
+        
         
         return cell
     }

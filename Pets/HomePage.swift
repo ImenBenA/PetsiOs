@@ -12,9 +12,9 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
 
     @IBOutlet weak var collectionView: UICollectionView!
     
-    let itemLabels = ["Add post", "Lost", "Found", "My profile", "My posts", "Settings", "Notifications"]
+    let itemLabels = ["Add post", "Lost", "Found", "My profile", "My posts", "Settings"]
     
-    let itemDescriptions = [" ", "Lost pets' posts", "Found pets' posts", "Edit your profile", "Manage your posts", "Manage your settings", "Check your notifications"]
+    let itemDescriptions = [" ", "Lost pets' posts", "Found pets' posts", "Edit your profile", "Manage your posts", "Manage your settings"]
     
     let screenWidth = 150
     
@@ -24,7 +24,6 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
         UIImage(named: "found")!,
         UIImage(named: "myposts")!,
         UIImage(named: "myprofile")!,
-        UIImage(named: "notifs")!,
         UIImage(named: "settings")!
         ]
     
@@ -36,7 +35,7 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if (itemLabels[indexPath.item] == "Add post") {
+        if ( itemLabels[indexPath.item] == "Add post" || itemLabels[indexPath.item] == "Settings" ) {
             let width = (self.view.frame.size.width - 11)
             let height = self.view.frame.size.height / 3.5
             return CGSize(width: width, height: height)
@@ -56,7 +55,7 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CollectionViewCell
         
-        if (itemLabels[indexPath.item] == "Add post") {
+        if ( itemLabels[indexPath.item] == "Add post" || itemLabels[indexPath.item] == "Settings" ) {
             cell.itemIcon.center.x = self.view.center.x
             cell.itemLabel.center.x = self.view.center.x
             cell.itemDescription.center.x = self.view.center.x
@@ -88,6 +87,12 @@ class HomePage: UIViewController, UICollectionViewDelegate, UICollectionViewData
             performSegue(withIdentifier: "toLost", sender: indexPath)
         } else if (itemLabels[indexPath.item] == "Found") {
             performSegue(withIdentifier: "toLost", sender: indexPath)
+        }
+        else if (itemLabels[indexPath.item] == "Add post") {
+            performSegue(withIdentifier: "toAddPost", sender: indexPath)
+        }
+        else if (itemLabels[indexPath.item] == "My profile") {
+            performSegue(withIdentifier: "toProfile", sender: indexPath)
         }
         
         
