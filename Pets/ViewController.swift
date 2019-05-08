@@ -9,27 +9,49 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import Alamofire
 class ViewController: UIViewController {
 
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
     @IBAction func login_action(_ sender: Any) {
-        //let username = _username.text
-        //let password = _password.text
-        /*if (username == "fedi" || password == "fedi"){*/
-            performSegue(withIdentifier: "login_success", sender: self)
-        //}
+        let username = _username.text
+        let password = _password.text
+        let urlString = "http://41.226.11.252:1180/pets/user/userByUsernamePassword.php"
+        let json = "{\"username\":\""+username!+"\",\"password\":\""+password!+"\"}"
+        
+        let url = URL(string: urlString)!
+        let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.post.rawValue
+        request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        Alamofire.request(request).responseJSON {
+            (response) in
+            if (true){
+            let user = response.result.value as! Dictionary<String,Any>
+            let usr = user["username"] as! String
+            self.loginSuccess()
+            }
+        }
     }
     
 
     @IBAction func signup_action(_ sender: Any) {
         performSegue(withIdentifier: "signup", sender: self)
+    }
+    
+    func loginSuccess(){
+        performSegue(withIdentifier: "login_success", sender: self)
     }
     
     @IBAction func fbLogin(_ sender: Any) {

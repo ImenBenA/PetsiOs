@@ -426,6 +426,9 @@
                                 <state key="normal" title="Pick image">
                                     <color key="titleColor" red="0.2470588235" green="0.64705882349999999" blue="0.81960784310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectImage:" destination="9ca-Y2-2Nl" eventType="touchUpInside" id="FbP-lT-0VH"/>
+                                </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YpD-Oi-rg5">
                                 <rect key="frame" x="16" y="232" width="343" height="202"/>
@@ -443,12 +446,17 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S6c-mt-law">
+                                <rect key="frame" x="16" y="481" width="124" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="02m-X1-GcQ"/>
                     </view>
                     <connections>
                         <outlet property="addButton" destination="Jyd-Sb-JIq" id="kz7-Pb-8Iv"/>
+                        <outlet property="imageView" destination="S6c-mt-law" id="cgR-3w-oBo"/>
                         <outlet property="petTypePicker" destination="rJx-HZ-tAq" id="UyH-vz-ROk"/>
                         <outlet property="postTypePicker" destination="UC8-FR-qsw" id="0di-3x-Kki"/>
                         <outlet property="townPickerView" destination="YpD-Oi-rg5" id="zNU-OE-I1e"/>

@@ -8,20 +8,21 @@
 
 import UIKit
 
-class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewDataSource , UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var uploadImageButton: UIButton!
     @IBOutlet weak var petTypePicker: UISegmentedControl!
     @IBOutlet weak var postTypePicker: UISegmentedControl!
-    
     private let towns = ["Ariena", "Beja", "Benarous", "Bizerte", "Gabes", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine", "Monastir", "Nabeul", "Sfax", "Sidibouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"]
     
-    
+    let imagePicker = UIImagePickerController()
     @IBOutlet weak var townPickerView: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
         /*self.townPickerView.delegate = self
          self.townPickerView.dataSource = self*/
         addButton.layer.cornerRadius = 10
@@ -95,4 +96,29 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         }
     }
     
+    @IBAction func selectImage(_ sender: Any) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        
+        present(imagePicker, animated: true, completion: nil)
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        // The info dictionary may contain multiple representations of the image. You want to use the original.
+        guard let selectedImage = info[.originalImage] as? UIImage else {
+            fatalError("Expected a dictionary containing an image, but was provided the following: \(info)")
+        }
+        
+        // Set photoImageView to display the selected image.
+        imageView.image = selectedImage
+        let imageData:NSData = selectedImage.jpegData(compressionQuality: 0.4)! as NSData
+        let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
+        print("my base64 : " + strBase64)
+        // Dismiss the picker.
+        dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }
+
