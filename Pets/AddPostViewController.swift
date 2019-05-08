@@ -7,24 +7,31 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewDataSource , UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBOutlet weak var petTypePicker: UISegmentedControl!
+    @IBOutlet weak var postTypePicker: UISegmentedControl!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var uploadImageButton: UIButton!
-    @IBOutlet weak var petTypePicker: UISegmentedControl!
-    @IBOutlet weak var postTypePicker: UISegmentedControl!
-    private let towns = ["Ariena", "Beja", "Benarous", "Bizerte", "Gabes", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine", "Monastir", "Nabeul", "Sfax", "Sidibouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"]
-    
-    let imagePicker = UIImagePickerController()
+    @IBOutlet weak var petDescription: UITextField!
     @IBOutlet weak var townPickerView: UIPickerView!
+    
+    private let towns = ["Ariena", "Beja", "Benarous", "Bizerte", "Gabes", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kebili", "Kef", "Mahdia", "Manouba", "Medenine", "Monastir", "Nabeul", "Sfax", "Sidibouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"]
+    let imagePicker = UIImagePickerController()
+    var petType = ""
+    var postType = ""
+    var selectedTown = ""
+    var imageURL = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
-        /*self.townPickerView.delegate = self
-         self.townPickerView.dataSource = self*/
+        self.townPickerView.delegate = self
+        self.townPickerView.dataSource = self
         addButton.layer.cornerRadius = 10
         addButton.layer.shadowColor = UIColor.lightGray.cgColor
         addButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
@@ -35,7 +42,6 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         uploadImageButton.layer.shadowOffset = CGSize(width:0,height: 2.0)
         uploadImageButton.layer.shadowRadius = 2.0
         uploadImageButton.layer.shadowOpacity = 1.0
-        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -46,62 +52,16 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         return towns.count
     }
     
-    /*func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let valueSelected = yourDataSourceArray[row] as String
-    }*/
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let valueSelected = towns[row] as String
+        selectedTown = valueSelected
+        print ("selected town" , selectedTown, valueSelected)
+    }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return towns[row]
     }
     
-    
-    @IBAction func postTypeAction(_ sender: Any) {
-        if(postTypePicker.selectedSegmentIndex==0)
-        {
-            //self.view.backgroundColor=UIColor.purpleColor()
-            //postTypePicker.selectedSegmentIndex=UISegmentedControl.noSegment
-        }
-        else if(postTypePicker.selectedSegmentIndex==1)
-        {
-            /*self.view.backgroundColor=UIColor.yellowColor()
-            segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-        else {
-            /*self.view.backgroundColor=UIColor.grayColor()
-             segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-    }
-    
-    
-    
-    @IBAction func petTypeAction(_ sender: Any) {
-        if(petTypePicker.selectedSegmentIndex==0)
-        {
-            /*self.view.backgroundColor=UIColor.purpleColor()
-             segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-        else if(petTypePicker.selectedSegmentIndex==1)
-        {
-            /*self.view.backgroundColor=UIColor.yellowColor()
-             segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-        else if(petTypePicker.selectedSegmentIndex==2)
-        {
-            /*self.view.backgroundColor=UIColor.grayColor()
-             segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-        else {
-            /*self.view.backgroundColor=UIColor.grayColor()
-             segmentcontroll.selectedSegmentIndex=UISegmentedControlNoSegment*/
-        }
-    }
-    
-    @IBAction func selectImage(_ sender: Any) {
-        imagePicker.allowsEditing = false
-        imagePicker.sourceType = .photoLibrary
-        
-        present(imagePicker, animated: true, completion: nil)
-    }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         // The info dictionary may contain multiple representations of the image. You want to use the original.
@@ -113,12 +73,89 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         imageView.image = selectedImage
         let imageData:NSData = selectedImage.jpegData(compressionQuality: 0.4)! as NSData
         let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
+        imageURL = strBase64
         print("my base64 : " + strBase64)
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
     }
+    
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
+    
+    
+    @IBAction func postTypeAction(_ sender: Any) {
+        postType = postTypePicker.titleForSegment(at: postTypePicker.selectedSegmentIndex)!
+        switch postTypePicker.selectedSegmentIndex
+        {
+        case 0:
+            print("First Segment Selected", postType)
+            
+        case 1:
+            print("Second Segment Selected", postType)
+        default:
+            break
+        }
+    }
+    
+    @IBAction func petTypeAction(_ sender: Any) {
+        petType = petTypePicker.titleForSegment(at: petTypePicker.selectedSegmentIndex)!
+        switch petTypePicker.selectedSegmentIndex
+        {
+        case 0:
+            print("First Segment Selected", petType)
+        case 1:
+            print("Second Segment Selected", petType)
+        case 2:
+            print("third Segment Selected", petType)
+        default:
+            break
+        }
+    }
+    
+    @IBAction func selectImage(_ sender: Any) {
+        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func addPost(_ sender: Any) {
+        if ( (petDescription.text?.isEmpty != true) && (imageURL.isEmpty != true) && (selectedTown.isEmpty != true) ){
+            print("description & image & town are not empty")
+            print ("posttype" , postTypePicker.selectedSegmentIndex)
+            print ("petType" , postTypePicker.selectedSegmentIndex)
+            print("description", petDescription.text)
+            print("selected town", selectedTown)
+            let desc = petDescription.text
+            
+            let urlString = "http://41.226.11.252:1180/pets/post/addPost.php"
+            let now = Date()
+            
+            
+            /*let json = "{\"description\":\""+desc!+"\",\"petImage\":\""+imageURL+"\",\"type\":\""+petType+"\",\"userId\":\""+60+"\",\"date\":\""+now+"\"}"
+            
+            let url = URL(string: urlString)!
+            let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = HTTPMethod.post.rawValue
+            request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
+            request.httpBody = jsonData
+            
+            Alamofire.request(request).responseJSON {
+                (response) in
+                if (true){
+                let user = response.result.value as! Dictionary<String,Any>
+                let usr = user["username"] as! String
+                self.loginSuccess()
+                }
+            }*/
+        } else {
+            print("daaaaaate" , Date())
+        }
+ 
+    }
+    
+    
 }
 
