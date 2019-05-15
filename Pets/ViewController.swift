@@ -37,13 +37,11 @@ class ViewController: UIViewController {
         
         Alamofire.request(request).responseJSON {
             (response) in
-            let user = response.result.value as! Dictionary<String,String>
-            if (user != Dictionary<String,String>()){
+            if (true){
+            let user = response.result.value as! Dictionary<String,Any>
             let usr = user["username"] as! String
-            print(usr)
             self.loginSuccess()
             }
-            else {print("wrong data")}
         }
     }
     
