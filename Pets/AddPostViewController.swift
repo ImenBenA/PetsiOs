@@ -71,10 +71,11 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
         
         // Set photoImageView to display the selected image.
         imageView.image = selectedImage
-        let imageData:NSData = selectedImage.jpegData(compressionQuality: 0.4)! as NSData
+        let imageData:NSData = selectedImage.pngData()! as NSData
         let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
         imageURL = strBase64
-        print("my base64 : " + strBase64)
+        //imageURL = String(strBase64.filter { !" \n\t\r".contains($0) })
+        //print("my base64 : " + strBase64)
         // Dismiss the picker.
         dismiss(animated: true, completion: nil)
     }
@@ -124,16 +125,26 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
             print("description & image & town are not empty")
             print ("posttype" , postTypePicker.selectedSegmentIndex)
             print ("petType" , postTypePicker.selectedSegmentIndex)
-            print("description", petDescription.text)
+            print("description", petDescription.text!)
             print("selected town", selectedTown)
             let desc = petDescription.text
-            
+            var postType = ""
+            if (postTypePicker.selectedSegmentIndex == 0)
+            {postType = "found"}
+            else
+            {postType = "lost"}
             let urlString = "http://41.226.11.252:1180/pets/post/addPost.php"
             let now = Date()
-            
-            
-            /*let json = "{\"description\":\""+desc!+"\",\"petImage\":\""+imageURL+"\",\"type\":\""+petType+"\",\"userId\":\""+60+"\",\"date\":\""+now+"\"}"
-            
+            let descri = "{\"description\":\""+desc!+"\""
+            let pet = descri + ",\"petImage\":\""+imageURL+"\""
+            let type = pet + ",\"type\":\""+postType+"\""
+            let user = type + ",\"user_id\":\"60\""
+            let petType = user + ",\"petType\":\""+"cat"+"\""
+            let town = petType + ",\"town\":\""+selectedTown+"\""
+            let dates = town + ",\"date\":\""+"2000-06-09"+"\"}"
+            var json = dates
+            json = String(json.filter { !"\r\n\n\t\r".contains($0) })
+            print(json)
             let url = URL(string: urlString)!
             let jsonData = json.data(using: .utf8, allowLossyConversion: false)!
             
@@ -141,15 +152,13 @@ class AddPostViewController: ViewController, UIPickerViewDelegate, UIPickerViewD
             request.httpMethod = HTTPMethod.post.rawValue
             request.setValue("application/json; charset=UTF-8", forHTTPHeaderField: "Content-Type")
             request.httpBody = jsonData
-            
+            print(request.httpBody)
             Alamofire.request(request).responseJSON {
                 (response) in
                 if (true){
-                let user = response.result.value as! Dictionary<String,Any>
-                let usr = user["username"] as! String
-                self.loginSuccess()
+                print(response)
                 }
-            }*/
+            }
         } else {
             print("daaaaaate" , Date())
         }
